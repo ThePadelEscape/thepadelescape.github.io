@@ -54,7 +54,7 @@
     });
   });
 
-  /* ---- CONTACT FORM ---- */
+  /* ---- CONTACT FORM (Formspree) ---- */
   const form = document.getElementById('contactForm');
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -67,18 +67,38 @@
       btn.style.boxShadow  = '0 6px 24px rgba(76,175,80,0.35)';
       btn.disabled = true;
 
-      /*
-        TODO: Connect to a form backend (e.g. Formspree, Netlify Forms, EmailJS).
-        Example with Formspree: set action="https://formspree.io/f/YOUR_ID" method="POST"
-      */
-
-      setTimeout(() => {
+      // Submit to Formspree via fetch
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => {
+        if (response.ok) {
+          form.reset();
+          setTimeout(() => {
+            btn.innerHTML = original;
+            btn.style.background = '';
+            btn.style.boxShadow  = '';
+            btn.disabled = false;
+          }, 3000);
+        } else {
+          alert('Error sending message. Please try again or email us directly.');
+          btn.innerHTML = original;
+          btn.style.background = '';
+          btn.style.boxShadow  = '';
+          btn.disabled = false;
+        }
+      })
+      .catch(error => {
+        console.error('Form error:', error);
+        alert('Error sending message. Please try again or email us directly.');
         btn.innerHTML = original;
         btn.style.background = '';
         btn.style.boxShadow  = '';
         btn.disabled = false;
-        form.reset();
-      }, 4500);
+      });
     });
   }
 
