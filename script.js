@@ -84,7 +84,7 @@
 
   /* ---- SCROLL FADE-IN ANIMATIONS ---- */
   const animTargets = document.querySelectorAll(
-    '.step, .service-card, .handle-item, .gallery-item, .faq-item, .about-grid, .contact-grid'
+    '.step, .service-card, .handle-item, .faq-item, .about-grid, .contact-grid'
   );
 
   if ('IntersectionObserver' in window) {
@@ -129,61 +129,5 @@
     sections.forEach(s => sectionObserver.observe(s));
   }
 
-  /* ---- GALLERY LIGHTBOX (simple) ---- */
-  const galleryItems = document.querySelectorAll('.gallery-item');
-  if (galleryItems.length) {
-    // Create overlay
-    const overlay = document.createElement('div');
-    overlay.style.cssText = `
-      position:fixed; inset:0; background:rgba(28,43,61,0.94);
-      z-index:9999; display:flex; align-items:center; justify-content:center;
-      opacity:0; pointer-events:none; transition:opacity 0.3s ease; cursor:pointer;
-    `;
-    const lightboxImg = document.createElement('img');
-    lightboxImg.style.cssText = `
-      max-width:92vw; max-height:88vh; border-radius:12px;
-      box-shadow:0 30px 80px rgba(0,0,0,0.5); transform:scale(0.94);
-      transition:transform 0.35s ease;
-    `;
-    const closeBtn = document.createElement('button');
-    closeBtn.innerHTML = '&times;';
-    closeBtn.style.cssText = `
-      position:absolute; top:24px; right:32px; background:none; border:none;
-      color:#fff; font-size:2.5rem; cursor:pointer; line-height:1; opacity:0.8;
-    `;
-    overlay.appendChild(lightboxImg);
-    overlay.appendChild(closeBtn);
-    document.body.appendChild(overlay);
-
-    function openLightbox(src, alt) {
-      lightboxImg.src  = src;
-      lightboxImg.alt  = alt || '';
-      overlay.style.opacity = '1';
-      overlay.style.pointerEvents = 'auto';
-      document.body.style.overflow = 'hidden';
-      setTimeout(() => { lightboxImg.style.transform = 'scale(1)'; }, 20);
-    }
-    function closeLightbox() {
-      overlay.style.opacity = '0';
-      overlay.style.pointerEvents = 'none';
-      lightboxImg.style.transform = 'scale(0.94)';
-      document.body.style.overflow = '';
-    }
-
-    galleryItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const img = item.querySelector('img');
-        if (img) openLightbox(img.src, img.alt);
-      });
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay || e.target === closeBtn) closeLightbox();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
-    });
-  }
 
 })();
