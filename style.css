@@ -840,8 +840,8 @@ p { font-size: 1rem; color: #555; line-height: 1.75; }
   width: auto;
   object-fit: contain;
   margin-bottom: 18px;
-  filter: brightness(0) invert(1);
-  opacity: 0.9;
+  filter: brightness(1.2);
+  opacity: 1;
 }
 .footer-brand p {
   font-size: 0.88rem;
